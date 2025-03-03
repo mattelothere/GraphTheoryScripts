@@ -27,42 +27,48 @@ class Arc(Link):
 
 class Graph():
     def __init__(self):
-        print("i am a graph, hi")
         self.vertices = []
-        self.edges = []
+        self.links = []
         self.adjacency_matrix = []
     
     def __init__(self, graph_dict):
         print("creating graph from dictionnary `{}`".format(graph_dict))
-        self.vertices = [[] * len(graph_dict["vertices"])]
-        self.edges = [[] * len(graph_dict["edges"])]
+        self.vertices = graph_dict["vertices"]
+        self.links = [[] * len(graph_dict["links"])]
         self.adjacency_matrix = []
         
-
-            
-
-        
-
+        # initialize the adj_mat with 0 everywhere
+        for i in range(len(self.vertices)):
+            self.adjacency_matrix.append([0]*len(self.vertices))
+        for link in graph_dict["links"]:
+            self.adjacency_matrix[self.vertices.index(link[0])][self.vertices.index(link[1])] = 1
 
     def get_order(self):
         return len(self.vertices)
 
     def add_edge(self, vertex1:Vertex, vertex2:Vertex, edge_weight=None|int):
-        self.edges.append((vertex1, vertex2, edge_weight))
+        self.links.append((vertex1, vertex2, edge_weight))
 
     def add_vertex(self, vertex_label: str):
         self.vertices.append(vertex_label)
 
     def get_adjacency_matrix(self):
         """Returns the adjacency matrix if available"""
-        if self.adjacency_matrix == []:
+        if self.adjacency_matrix != []:
             return self.adjacency_matrix
-        else: 
-            print("NOT IMPLEMENTED : Yet to compute adjacency matrix")
 
     def __repr__(self):
-        print("not implemented Graph.__repr__()")
-        return ""
+        res = "  "
+        # Header row label printing
+        for v in self.vertices:
+            res += v + "  "
+        res += "\n"
+
+        # Cycling through the adjacency matrix list to print weights
+        for i in range(len(self.adjacency_matrix)):
+            res += self.vertices[i]
+            res += str(self.adjacency_matrix[i]) + "\n"
+        return res
 
 
 if __name__ == "__main__":
@@ -80,3 +86,14 @@ if __name__ == "__main__":
     from utils import read_graph_from_file
     C = read_graph_from_file("./saved_graphs/myTestGraph.json")
     print(C)
+
+
+    print("\nTEST 4 - adjacency matrices\n")
+    C = Graph(C)
+    print(C)
+    print("getting adj mat :")
+    print(C.get_adjacency_matrix())
+
+
+
+    
